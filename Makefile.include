@@ -1,6 +1,13 @@
 # include Makefile.local if it exists
 -include Makefile.local
 
+ifneq (,$(filter rust_support,$(FEATURES_REQUIRED)))
+# Disable parallel builds due to race conditions
+# when building the crate dependencies. To fix this
+# we need proper dependency handling in pkg/rust.
+.NOTPARALLEL:
+endif
+
 all:
 
 # set undefined variables

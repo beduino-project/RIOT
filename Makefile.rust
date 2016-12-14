@@ -1,0 +1,31 @@
+MODULE ?= $(shell basename $(CURDIR))
+
+# Set crate metadata in case they aren't set.
+CRATE_TYPE ?= bin
+CRATE_NAME ?= $(shell basename $(MODULE))
+
+# Make our custom targets known to rustc.
+export RUST_TARGET_PATH ?= $(RIOTBASE)/dist/rust
+
+# Set the rust target accordingly.
+ifeq ($(BOARD),native)
+	RUST_TARGET=i586-unknown-linux-gnu
+else
+	RUST_TARGET=$(CPU_ARCH)
+endif
+
+# Enable some compiler optimizations
+RUSTC_FLAGS += -C opt-level=s
+ifeq (bin,$(CRATE_TYPE))
+	RUSTC_FLAGS += -C lto
+endif
+
+# Flags to pass to the rust compiler.
+RUSTC_FLAGS += --crate-name $(CRATE_NAME) \
+	       --crate-type $(CRATE_TYPE) \
+	       --target $(RUST_TARGET)
+
+# Add rust crates with `--extern` to `RUSTC_FLAGS`.
+RSDEPS = $(filter rust/%,$(USEMODULE) $(USEPKG)) $(CRATE_DEPS:%=rust/%)
+RUSTC_FLAGS += $(foreach m,$(RSDEPS:rust/%=%),\
+	--extern $(m)=$(BINDIR)/rust/lib$(m).rlib)
