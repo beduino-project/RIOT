@@ -1,14 +1,11 @@
 #![no_std]
 
-extern crate libc;
-use libc::size_t;
-
 use core::fmt;
 use core::fmt::Result;
 use core::result;
 
 extern {
-	fn print(ptr: *const u8, len: size_t) -> ();
+	fn print(ptr: *const u8, len: usize) -> ();
 }
 
 // A handle to the global standard output stream of the current process.
