@@ -10,7 +10,6 @@ mod lang_items {
     fn eh_personality() {}
 }
 
-extern crate libc;
 extern crate fmt;
 
 use fmt::Stdout;
@@ -18,6 +17,6 @@ use core::fmt::Write;
 
 #[no_mangle]
 pub fn main() {
-	let mut out = Stdout {};
-	out.write_str("Hello World!\n").unwrap();
+    let mut out = Stdout {};
+    out.write_str("Hello World!\n").unwrap();
 }

@@ -1,8 +1,8 @@
 # Name of your application.
-APPLICATION = rust
+APPLICATION = hello_world
 
 # This has to be the absolute path to the RIOT base directory:
-RIOTBASE ?= $(CURDIR)/../..
+RIOTBASE ?= $(CURDIR)/../../..
 
 # Change this to 0 show compiler invocation lines by default:
 QUIET ?= 1
@@ -12,9 +12,6 @@ FEATURES_REQUIRED += rust_support
 
 # If no BOARD is found in the environment, use this default:
 BOARD ?= native
-
-# Since we build rust with `#![no_std]` we need libcore.
-USEPKG += rust/core
 
 # Depend on the rust/fmt wrapper for the fmt module.
 USEMODULE += rust/fmt
