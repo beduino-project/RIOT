@@ -2,6 +2,11 @@ ifeq (, $(__RIOTBUILD_FLAG))
     $(error You cannot build a module on its own. Use "make" in your application's directory instead.)
 endif
 
+ifeq (1, $(RUST_BUILD))
+# For an explanation read the comment in Makefile.include
+.NOTPARALLEL:
+endif
+
 unexport DIRS
 DIRS := $(sort $(abspath ${DIRS}))
 
