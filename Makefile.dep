@@ -609,12 +609,19 @@ ifneq (,$(filter vfs,$(USEMODULE)))
     ifeq (native, $(BOARD))
         USEMODULE += native_vfs
     endif
+endif
 
-# Automatically include dependencies for rust wrappers
-RUSTMODULES := $(filter rust/%,$(USEMODULE))
-ifneq (,$(RUSTMODULES))
-    USEPKG += rust/core rust/libc
-    USEMODULE += $(RUSTMODULES:rust/%=%)
+ifeq (1,$(RUST_BUILD))
+    USEPKG += rust/core
+    USEMODULE += rust/basecpu rust/cpu
+
+    ifneq (,$(filter rust/fmt,$(USEMODULE)))
+        USEMODULE += fmt
+    endif
+
+    ifneq (,$(filter rust/xtimer,$(USEMODULE)))
+        USEMODULE += xtimer
+    endif
 endif
 
 # include package dependencies

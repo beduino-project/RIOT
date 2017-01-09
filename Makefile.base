@@ -79,17 +79,23 @@ $(OBJCXX): $(BINDIR)/$(MODULE)/%.o: %.cpp $(RIOTBUILD_CONFIG_HEADER_C)
 
 ifdef CRATE_TYPE
 include $(RIOTBASE)/Makefile.rust
+
+ifeq (1,$(RUST_FFI))
+RUST_FFI_LIB = $(BINDIR)/$(MODULE)/libffi.a
+$(RUST_FFI_LIB): $(OBJ)
+	$(Q)$(AR) $(ARFLAGS) $@ $<
+endif
 endif
 
 ifeq ($(CRATE_TYPE),bin)
-$(RUSTOBJ): $(RUSTSRC) | $(BINDIR)/$(MODULE)/ ${DIRS:%=ALL--%}
+$(RUSTOBJ): $(RUSTSRC) | $(BINDIR)/$(MODULE)/ $(RUST_FFI_LIB) ${DIRS:%=ALL--%}
 	$(Q)rustc $(RUSTC_FLAGS) --emit obj -o $@ $<
 $(BINDIR)/$(MODULE).a: $(RUSTOBJ)
 	$(Q)$(AR) $(ARFLAGS) $@ $<
 else ifeq ($(CRATE_TYPE),lib)
 LIBNAME = $(MODULE:rust/%=rust/lib%)
-$(BINDIR)/$(LIBNAME).rlib: $(RUSTSRC) | $(BINDIR)/$(MODULE)/ ${DIRS:%=ALL--%}
-	$(Q)rustc $(RUSTC_FLAGS) -o $@ $<
+$(BINDIR)/$(LIBNAME).rlib: $(RUSTSRC) | $(BINDIR)/$(MODULE)/ $(RUST_FFI_LIB) ${DIRS:%=ALL--%}
+	$(Q)rustc $(RUSTC_FLAGS) --emit link,dep-info --out-dir $(shell dirname $@) $<
 $(BINDIR)/$(MODULE).a: $(BINDIR)/$(LIBNAME).rlib
 	$(Q)ln -fs $< $@
 else

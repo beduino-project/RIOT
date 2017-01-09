@@ -3,5 +3,8 @@ export CPU_FAM  = stm32f1
 
 USEMODULE += pm_layered
 
+# This CPU supports the Rust programming language
+FEATURES_PROVIDED += rust_support
+
 include $(RIOTCPU)/stm32_common/Makefile.include
 include $(RIOTCPU)/Makefile.include.cortexm_common

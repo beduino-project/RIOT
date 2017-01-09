@@ -1,5 +1,3 @@
-MODULE ?= $(shell basename $(CURDIR))
-
 # Set crate metadata in case they aren't set.
 CRATE_TYPE ?= bin
 CRATE_NAME ?= $(shell basename $(MODULE))
@@ -23,7 +21,14 @@ endif
 # Flags to pass to the rust compiler.
 RUSTC_FLAGS += --crate-name $(CRATE_NAME) \
 	       --crate-type $(CRATE_TYPE) \
-	       --target $(RUST_TARGET)
+	       --target $(RUST_TARGET) \
+	       -L native=$(BINDIR)/$(MODULE)/ \
+	       -L dependency=$(BINDIR)/rust/
+
+# Link against libffi.a if needed
+ifeq (1,$(RUST_FFI))
+	RUSTC_FLAGS += -l static=ffi
+endif
 
 # Add rust crates with `--extern` to `RUSTC_FLAGS`.
 RSDEPS = $(filter rust/%,$(USEMODULE) $(USEPKG)) $(CRATE_DEPS:%=rust/%)
