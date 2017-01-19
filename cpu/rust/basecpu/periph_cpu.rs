@@ -1,3 +1,7 @@
+use libc::c_uint;
+
+pub type gpio_t = c_uint;
+
 #[repr(C)]
 pub enum gpio_mode {
     GPIO_IN,
