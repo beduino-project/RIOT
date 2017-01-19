@@ -3,19 +3,23 @@
 extern crate cpu;
 
 use core::option::Option;
+
 use cpu::periph_cpu::gpio_mode;
+use cpu::periph_cpu::gpio_t;
+
+use cpu::libc::c_int;
 
 /// Struct representing a GPIO pin.
 pub struct Pin {
-    num: u32,
+    num: gpio_t,
 }
 
 extern {
-    fn gpio_init(pin: u32, mode: gpio_mode) -> i32;
-    fn gpio_read(pin: u32) -> u8;
-    fn gpio_write(pin: u32, val: u8);
-    fn gpio_pin(x: u32, y: u32) -> u32;
-    fn gpio_toggle(pin: u32);
+    fn gpio_init(pin: gpio_t, mode: gpio_mode) -> c_int;
+    fn gpio_read(pin: gpio_t) -> c_int;
+    fn gpio_write(pin: gpio_t, val: u8);
+    fn gpio_pin(x: c_int, y: c_int) -> gpio_t;
+    fn gpio_toggle(pin: gpio_t);
 }
 
 impl Pin {
@@ -27,7 +31,7 @@ impl Pin {
     /// Creates a new GPIO Pin from a port-pin tuple. `x` is
     /// the port which should be just and `y` is the pin which
     /// should be used.
-    pub fn from_tuple(x: u32, y: u32) -> Pin {
+    pub fn from_tuple(x: i32, y: i32) -> Pin {
         let n = unsafe {
             gpio_pin(x, y)
         };
