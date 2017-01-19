@@ -1,5 +1,8 @@
 extern crate basecpu;
 
+pub use self::basecpu::periph_cpu::gpio_flank;
+pub use self::basecpu::periph_cpu::gpio_t;
+
 macro_rules! mode {
     ($x:expr, $y:expr, $z:expr) => {
         ($x | ($y << 2) | ($z << 4))
@@ -15,5 +18,3 @@ pub enum gpio_mode {
     GPIO_OD    = mode!(3, 1, 0),
     GPIO_OD_PU = (0xff),
 }
-
-pub type gpio_flank = basecpu::periph_cpu::gpio_flank;
