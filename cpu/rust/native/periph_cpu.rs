@@ -1,1 +1,3 @@
-../basecpu/periph_cpu.rs
+extern crate basecpu;
+
+pub use self::basecpu::periph_cpu::*;
