@@ -36,11 +36,11 @@ endif
 ifeq ($(strip $(RUSTSRC)),)
     ifneq (,$(wildcard main.rs))
         CRATE_TYPE = bin
-        RUSTSRC = main.rs
     else ifneq (,$(wildcard lib.rs))
         CRATE_TYPE = lib
-        RUSTSRC = lib.rs
     endif
+
+    RUSTSRC = $(wildcard *.rs)
 endif
 ifeq ($(strip $(ASMSRC)),)
     ASMSRC := $(wildcard *.s)
@@ -94,13 +94,13 @@ endif
 
 ifeq ($(CRATE_TYPE),bin)
 $(RUSTOBJ): $(RUSTSRC) | $(BINDIR)/$(MODULE)/ $(RUST_FFI_LIB) ${DIRS:%=ALL--%}
-	$(Q)rustc $(RUSTC_FLAGS) --emit obj -o $@ $<
+	$(Q)rustc $(RUSTC_FLAGS) --emit obj -o $@ main.rs
 $(BINDIR)/$(MODULE).a: $(RUSTOBJ)
 	$(Q)$(AR) $(ARFLAGS) $@ $<
 else ifeq ($(CRATE_TYPE),lib)
 LIBNAME = $(MODULE:rust/%=rust/lib%)
 $(BINDIR)/$(LIBNAME).rlib: $(RUSTSRC) | $(BINDIR)/$(MODULE)/ $(RUST_FFI_LIB) ${DIRS:%=ALL--%}
-	$(Q)rustc $(RUSTC_FLAGS) --emit link,dep-info --out-dir $(shell dirname $@) $<
+	$(Q)rustc $(RUSTC_FLAGS) --emit link,dep-info --out-dir $(shell dirname $@) lib.rs
 $(BINDIR)/$(MODULE).a: $(BINDIR)/$(LIBNAME).rlib
 	$(Q)ln -fs $< $@
 else
