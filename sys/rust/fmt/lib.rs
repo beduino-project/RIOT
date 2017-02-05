@@ -11,10 +11,10 @@ extern {
     fn print(ptr: *const c_char, len: size_t) -> ();
 }
 
-// A handle to the global standard output stream of the current process.
-//
-// This type is similar to `std::io::Stdout` except that it implements
-// `core::fmt::Write` instead of `std::io::Write`.
+/// A handle to the global standard output stream of the current process.
+///
+/// This type is similar to `std::io::Stdout` except that it implements
+/// `core::fmt::Write` instead of `std::io::Write`.
 pub struct Stdout;
 
 impl fmt::Write for Stdout {
