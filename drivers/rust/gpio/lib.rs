@@ -17,7 +17,7 @@ pub struct Pin {
 extern {
     fn gpio_init(pin: gpio_t, mode: gpio_mode) -> c_int;
     fn gpio_read(pin: gpio_t) -> c_int;
-    fn gpio_write(pin: gpio_t, val: u8);
+    fn gpio_write(pin: gpio_t, val: c_int);
     fn gpio_pin(x: c_int, y: c_int) -> gpio_t;
     fn gpio_toggle(pin: gpio_t);
 }
