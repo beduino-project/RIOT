@@ -40,7 +40,8 @@ ifeq ($(strip $(RUSTSRC)),)
         CRATE_TYPE = lib
     endif
 
-    RUSTSRC = $(wildcard *.rs)
+    # ffi.rs is a symlink to /dev/stdin. Don't track it.
+    RUSTSRC = $(filter-out ffi.rs,$(wildcard *.rs))
 endif
 ifeq ($(strip $(ASMSRC)),)
     ASMSRC := $(wildcard *.s)
@@ -85,6 +86,16 @@ $(OBJCXX): $(BINDIR)/$(MODULE)/%.o: %.cpp $(RIOTBUILD_CONFIG_HEADER_C)
 ifdef CRATE_TYPE
 include $(RIOTBASE)/Makefile.rust
 
+ifneq (,$(RUST_FFI_HEADER))
+BINDGEN_CFLAGS = -include $(RIOTBUILD_CONFIG_HEADER_C) \
+	$(INCLUDES)
+
+ifneq ($(TOOLCHAIN),llvm)
+include $(RIOTCPU)/Makefile.include.llvm_common
+BINDGEN_CFLAGS += $(GCC_C_INCLUDES)
+endif
+endif
+
 ifeq (1,$(RUST_FFI))
 RUST_FFI_LIB = $(BINDIR)/$(MODULE)/libffi.a
 $(RUST_FFI_LIB): $(OBJ)
@@ -99,8 +110,14 @@ $(BINDIR)/$(MODULE).a: $(RUSTOBJ)
 	$(Q)$(AR) $(ARFLAGS) $@ $<
 else ifeq ($(CRATE_TYPE),lib)
 LIBNAME = $(MODULE:rust/%=rust/lib%)
-$(BINDIR)/$(LIBNAME).rlib: $(RUSTSRC) | $(BINDIR)/$(MODULE)/ $(RUST_FFI_LIB) ${DIRS:%=ALL--%}
+$(BINDIR)/$(LIBNAME).rlib: $(RUSTSRC) $(RUST_FFI_HEADER) | $(BINDIR)/$(MODULE)/ $(RUST_FFI_LIB) ${DIRS:%=ALL--%}
+ifneq (,$(RUST_FFI_HEADER))
+	$(Q)ln -fs /dev/stdin ffi.rs
+	$(Q)bindgen $(BINDGEN_FLAGS) $(RUST_FFI_HEADER) -- $(BINDGEN_CFLAGS) | \
+		rustc $(RUSTC_FLAGS) --emit link,dep-info --out-dir $(shell dirname $@) lib.rs
+else
 	$(Q)rustc $(RUSTC_FLAGS) --emit link,dep-info --out-dir $(shell dirname $@) lib.rs
+endif
 $(BINDIR)/$(MODULE).a: $(BINDIR)/$(LIBNAME).rlib
 	$(Q)ln -fs $< $@
 else

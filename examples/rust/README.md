@@ -12,10 +12,21 @@ crates to map RIOTs API to Rust are available.
 
 Since building binary packages with `#![no_std]` is currently not
 supported by the rust stable channel you need a nightly rust toolchain.
-
-After installing the nightly rust toolchain you should be good to go.
 The nightly version is needed because it is currently the only version
 supporting builds without the standard library for bin crates.
+
+Besides you need to install
+[bindgen](https://github.com/servo/rust-bindgen). Bindgen is needed to
+automatically generated Rust code from C header files. To install
+bindgen you can simply use cargo:
+
+    $ cargo install bindgen
+
+Afterwards verify that bindgen works as expected by running:
+
+    $ bindgen --help
+
+If you don't see any error message you should be good to go.
 
 # Upgrading
 
@@ -31,6 +42,6 @@ afterwards.
 
 As always,
 
-    # make BOARD=native all term
+    $ make BOARD=native all term
 
 is all you need.

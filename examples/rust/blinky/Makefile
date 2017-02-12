@@ -14,6 +14,6 @@ FEATURES_REQUIRED += rust_support
 BOARD ?= native
 
 # Depend on the rust/fmt wrapper for the fmt module.
-USEMODULE += rust/gpio rust/xtimer
+USEMODULE += rust/xtimer rust/periph
 
 include $(RIOTBASE)/Makefile.include

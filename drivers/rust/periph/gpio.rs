@@ -1,13 +1,8 @@
-#![no_std]
-
-extern crate cpu;
-
+use cpu::libc::c_int;
 use core::option::Option;
 
-use cpu::periph_cpu::gpio_mode;
-use cpu::periph_cpu::gpio_t;
-
-use cpu::libc::c_int;
+pub use ::ffi::gpio_t;
+pub use ::ffi::gpio_mode_t;
 
 /// Struct representing a GPIO pin.
 pub struct Pin {
@@ -15,7 +10,7 @@ pub struct Pin {
 }
 
 extern {
-    fn gpio_init(pin: gpio_t, mode: gpio_mode) -> c_int;
+    fn gpio_init(pin: gpio_t, mode: gpio_mode_t) -> c_int;
     fn gpio_read(pin: gpio_t) -> c_int;
     fn gpio_write(pin: gpio_t, val: c_int);
     fn gpio_pin(x: c_int, y: c_int) -> gpio_t;
@@ -40,7 +35,7 @@ impl Pin {
     }
 
     /// Initialize the pin as a general purpose input or output.
-    pub fn init(&self, mode: gpio_mode) -> Option<()> {
+    pub fn init(&self, mode: gpio_mode_t) -> Option<()> {
         let r = unsafe {
             gpio_init(self.num, mode)
         };

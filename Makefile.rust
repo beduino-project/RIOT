@@ -12,6 +12,12 @@ else
 	RUST_TARGET=$(CPU_ARCH)
 endif
 
+# Flags to pass to bindgen
+BINDGEN_FLAGS := --use-core --generate types \
+		 --ctypes-prefix ::cpu::libc \
+		 --no-doc-comments \
+		 $(RUST_FFI_TYPES:%=--whitelist-type %)
+
 # Enable some compiler optimizations
 RUSTC_FLAGS += -C opt-level=s
 ifeq (bin,$(CRATE_TYPE))

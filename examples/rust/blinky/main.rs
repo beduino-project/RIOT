@@ -10,10 +10,10 @@ mod lang_items {
     fn eh_personality() {}
 }
 
-extern crate gpio;
+extern crate periph;
 extern crate xtimer;
 
-use gpio::Pin;
+use periph::gpio::Pin;
 use xtimer::Duration::Seconds;
 
 #[no_mangle]
