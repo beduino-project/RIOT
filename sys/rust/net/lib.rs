@@ -1,10 +1,13 @@
 #![no_std]
 #![allow(bad_style)]
+#![allow(dead_code)]
 #![feature(untagged_unions)]
 
 extern crate cpu;
+extern crate kernel;
 
-pub mod kernel_types;
-pub mod error;
-pub mod msg;
 mod ffi;
+
+pub mod udp;
+pub mod ipaddr;
+pub mod sockaddr;
