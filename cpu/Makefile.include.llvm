@@ -1,3 +1,4 @@
+ifeq (llvm,$(TOOLCHAIN))
 export GDBPREFIX  ?= $(PREFIX)
 export LLVMPREFIX ?= llvm-
 # Apple XCode doesn't prefix its tools with llvm-, but manually installed LLVM
@@ -27,6 +28,7 @@ export SIZE        = $(LLVMPREFIX)size
 export DBG         = $(GDBPREFIX)gdb
 # LLVM lacks a binutils strip tool as well...
 #export STRIP      = $(LLVMPREFIX)strip
+endif
 
 ifneq (,$(TARGET_ARCH))
   # Clang on Linux uses GCC's C++ headers and libstdc++ (installed with GCC)
@@ -48,10 +50,12 @@ ifneq (,$(TARGET_ARCH))
     GCC_MULTI_DIR := $(shell $(PREFIX)gcc $(CFLAGS) -print-multi-directory 2>/dev/null)
   endif
 
-  # Tell clang to cross compile
-  export CFLAGS     += -target $(TARGET_ARCH)
-  export CXXFLAGS   += -target $(TARGET_ARCH)
-  export LINKFLAGS  += -target $(TARGET_ARCH)
+	ifeq (llvm,$(TOOLCHAIN))
+		# Tell clang to cross compile
+		export CFLAGS     += -target $(TARGET_ARCH)
+		export CXXFLAGS   += -target $(TARGET_ARCH)
+		export LINKFLAGS  += -target $(TARGET_ARCH)
+	endif
 
   # Use the wildcard Makefile function to search for existing directories matching
   # the patterns above. We use the -isystem gcc/clang argument to add the include
@@ -73,8 +77,10 @@ ifneq (,$(TARGET_ARCH))
     GCC_CXX_INCLUDES := $(addprefix -isystem ,$(wildcard $(dir $(shell which $(PREFIX)gcc))../$(TARGET_TRIPLE)/include))
   endif
 
-  # Pass the includes to the C++ compilation rule in Makefile.base
-  export CXXINCLUDES += $(GCC_CXX_INCLUDES)
+	ifeq (llvm,$(TOOLCHAIN))
+		# Pass the includes to the C++ compilation rule in Makefile.base
+		export CXXINCLUDES += $(GCC_CXX_INCLUDES)
+	endif
 
   # Some C headers (e.g. limits.h) are located with the GCC libraries
   GCC_C_INCLUDE_PATTERNS ?= \
@@ -94,5 +100,7 @@ ifneq (,$(TARGET_ARCH))
     GCC_C_INCLUDES := $(addprefix -isystem ,$(wildcard $(addprefix $(dir $(shell $(PREFIX)gcc -print-libgcc-file-name)), include include-fixed)))
   endif
 
-  export INCLUDES += $(GCC_C_INCLUDES)
+	ifeq (llvm,$(TOOLCHAIN))
+  	export INCLUDES += $(GCC_C_INCLUDES)
+	endif
 endif

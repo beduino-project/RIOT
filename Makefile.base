@@ -91,7 +91,7 @@ BINDGEN_CFLAGS = -include $(RIOTBUILD_CONFIG_HEADER_C) \
 	$(INCLUDES)
 
 ifneq ($(TOOLCHAIN),llvm)
-include $(RIOTCPU)/Makefile.include.llvm_common
+include $(RIOTCPU)/Makefile.include.llvm
 BINDGEN_CFLAGS += $(GCC_C_INCLUDES)
 endif
 endif
