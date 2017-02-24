@@ -1,9 +1,11 @@
 MODULE = $(APPLICATION)
 
 DIRS += $(RIOTCPU)/$(CPU) $(RIOTBOARD)/$(BOARD)
-ifeq (1,$(RUST_BUILD))
-DIRS += $(RIOTCPU)/rust/$(CPU) $(RIOTBASE)/core/rust
-endif
 DIRS += $(RIOTBASE)/core $(RIOTBASE)/drivers $(RIOTBASE)/sys
+
+ifeq (1,$(RUST_BUILD))
+DIRS += $(RIOTRUST)/cpu/$(CPU)
+DIRS += $(RIOTRUST)/core $(RIOTRUST)/drivers $(RIOTRUST)/sys
+endif
 
 include $(RIOTBASE)/Makefile.base

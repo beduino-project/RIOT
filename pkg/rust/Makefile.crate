@@ -17,7 +17,7 @@ $(BINDIR)/rust/$(LIBNAME).rlib: $(SOURCE_FILE) $(CRATE_DEPS:%=$(BINDIR)/rust/%.a
 	$(Q)mkdir -p $(BINDIR)/rust
 	$(Q)rustc $(RUSTC_FLAGS) -o $@ $(SOURCE_FILE)
 
-include $(RIOTBASE)/Makefile.rust
+include $(RIOTRUST)/Makefile.rust
 include $(RIOTPKG)/pkg.mk
 
 SOURCE_FILE ?= $(PKG_BUILDDIR)/src/lib.rs

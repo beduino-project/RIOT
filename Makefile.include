@@ -16,6 +16,7 @@ all:
 RIOTBASE       ?= $(dir $(lastword $(MAKEFILE_LIST)))
 CCACHE_BASEDIR ?= $(RIOTBASE)
 RIOTCPU        ?= $(RIOTBASE)/cpu
+RIOTRUST       ?= $(RIOTBASE)/rust
 RIOTBOARD      ?= $(RIOTBASE)/boards
 RIOTPKG        ?= $(RIOTBASE)/pkg
 RIOTPROJECT    ?= $(shell git rev-parse --show-toplevel 2>/dev/null || pwd)
