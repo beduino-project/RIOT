@@ -17,6 +17,7 @@ BINDGEN_FLAGS := --use-core \
 		 --ctypes-prefix ::cpu::libc \
 		 --no-doc-comments \
 		 $(RUST_FFI_TYPES:%=--whitelist-type %) \
+		 $(RUST_FFI_FUNCS:%=--whitelist-function %) \
 		 $(RUST_FFI_VARS:%=--whitelist-var %)
 
 # Enable some compiler optimizations
