@@ -4,7 +4,6 @@
 
 extern crate cpu;
 
-pub mod kernel_types;
 pub mod error;
 pub mod msg;
 mod ffi;

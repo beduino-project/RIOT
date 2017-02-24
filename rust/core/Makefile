@@ -10,4 +10,7 @@ RUST_FFI_HEADER = ffi.h
 RUST_FFI_VARS = XEADDRINUSE XEINVAL XEHOSTUNREACH XEAFNOSUPPORT \
 		XENOMEM XEADDRNOTAVAIL XENOBUFS XEPROTO XENOTCONN
 
+# The kernel_pid_t variable is needed by the IPC wrapper.
+RUST_FFI_TYPES = kernel_pid_t
+
 include $(RIOTBASE)/Makefile.base

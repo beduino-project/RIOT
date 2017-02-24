@@ -4,7 +4,7 @@ use cpu::libc::{c_int, c_void};
 use core::option::Option;
 use core::result::Result;
 
-use kernel_types::kernel_pid_t;
+use ::ffi::kernel_pid_t;
 
 extern {
     fn msg_init_queue(m: *mut msg_t, n: c_int);
