@@ -12,39 +12,20 @@ use core::ops::Drop;
 use core::ptr;
 use core::mem;
 
-use cpu::libc::size_t;
-use cpu::libc::ssize_t;
 use cpu::libc::c_void;
-use cpu::libc::uint16_t;
 use cpu::libc::uint32_t;
-use cpu::libc::c_int;
 
 use ::sockaddr::SocketAddr;
 use ::ffi::sock_udp_ep_t;
+use ::ffi::sock_udp_create;
+use ::ffi::sock_udp_send;
+use ::ffi::sock_udp_recv;
+use ::ffi::sock_udp_get_local;
+use ::ffi::sock_udp_close;
 
 pub use ::ffi::sock_udp_t;
 
 extern {
-    fn sock_udp_create(
-        s: *mut sock_udp_t,
-        l: *const sock_udp_ep_t,
-        r: *const sock_udp_ep_t,
-        f: uint16_t) -> c_int;
-    fn sock_udp_send(
-        s: *mut sock_udp_t,
-        d: *const c_void,
-        l: size_t,
-        r: *const sock_udp_ep_t) -> ssize_t;
-    fn sock_udp_recv(
-        s: *mut sock_udp_t,
-        d: *const c_void,
-        l: size_t,
-        t: uint32_t,
-        r: *mut sock_udp_ep_t) -> ssize_t;
-    fn sock_udp_get_local(
-        s: *mut sock_udp_t,
-        e: *mut sock_udp_ep_t) -> c_int;
-    fn sock_udp_close(s: *mut sock_udp_t) -> ();
     static XSOCK_NO_TIMEOUT: uint32_t;
 }
 

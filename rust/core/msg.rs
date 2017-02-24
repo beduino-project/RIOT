@@ -1,41 +1,17 @@
-use cpu::libc::{uint16_t, uint32_t};
-use cpu::libc::{c_int, c_void};
+use cpu::libc::uint16_t;
+use cpu::libc::c_int;
 
 use core::option::Option;
 use core::result::Result;
 
-use ::ffi::kernel_pid_t;
-
-extern {
-    fn msg_init_queue(m: *mut msg_t, n: c_int);
-    fn msg_send(m: &mut msg_t, p: kernel_pid_t) -> c_int;
-    fn msg_send_to_self(m: &mut msg_t) -> c_int;
-    fn msg_send_receive(m: &mut msg_t, r: &mut msg_t, p: kernel_pid_t) -> c_int;
-    fn msg_receive(m: &mut msg_t) -> c_int;
-    fn msg_reply(m: &mut msg_t, r: &mut msg_t) -> c_int;
-    fn msg_avail() -> c_int;
-    fn msg_queue_print();
-}
-
-/// Rust representation of a union used internally by `msg_t`.
-#[repr(C)]
-pub union content {
-    pub ptr: c_void,
-    pub value: uint32_t,
-}
-
-/// Rust representation of RIOTs msg_t type from the `msg.h`.
-#[repr(C)]
-pub struct msg_t {
-    sender: kernel_pid_t,
-    mtype: uint16_t,
-    cont: content,
-}
+use ::ffi::*;
+pub use ::ffi::msg_t;
+pub use ::ffi::msg_t__bindgen_ty_1 as content;
 
 impl msg_t {
     /// Create a new message of the given type with the given content.
     pub fn new(t: uint16_t, c: content) -> Self {
-        msg_t { sender: 0, mtype: t, cont: c }
+        msg_t { sender_pid: 0, type_: t, content: c }
     }
 }
 

@@ -1,5 +1,5 @@
 #include <errno.h>
-#include "kernel_types.h"
+#include "msg.h"
 
 /**
  * This file is needed because values in errno.h are usually defined as

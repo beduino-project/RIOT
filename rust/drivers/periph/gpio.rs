@@ -4,17 +4,18 @@ use core::option::Option;
 pub use ::ffi::gpio_t;
 pub use ::ffi::gpio_mode_t;
 
+use ::ffi::gpio_init;
+use ::ffi::gpio_read;
+use ::ffi::gpio_write;
+use ::ffi::gpio_toggle;
+
 /// Struct representing a GPIO pin.
 pub struct Pin {
     num: gpio_t,
 }
 
 extern {
-    fn gpio_init(pin: gpio_t, mode: gpio_mode_t) -> c_int;
-    fn gpio_read(pin: gpio_t) -> c_int;
-    fn gpio_write(pin: gpio_t, val: c_int);
     fn gpio_pin(x: c_int, y: c_int) -> gpio_t;
-    fn gpio_toggle(pin: gpio_t);
 }
 
 impl Pin {

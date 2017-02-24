@@ -1,15 +1,13 @@
 #![no_std]
 
 extern crate cpu;
-use cpu::libc::{size_t, c_char};
 
 use core::fmt;
 use core::fmt::Result;
 use core::result;
 
-extern {
-    fn print(ptr: *const c_char, len: size_t) -> ();
-}
+mod ffi;
+use ffi::print;
 
 /// A handle to the global standard output stream of the current process.
 ///
