@@ -622,6 +622,11 @@ ifeq (1,$(RUST_BUILD))
     ifneq (,$(filter rust/xtimer,$(USEMODULE)))
         USEMODULE += xtimer
     endif
+
+    ifneq (,$(filter rust/net,$(USEMODULE)))
+        USEMODULE += ipv4_addr
+        USEMODULE += ipv6_addr
+    endif
 endif
 
 # include package dependencies

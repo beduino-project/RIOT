@@ -2,6 +2,15 @@
 //!
 //! This is very closely modelled after `std::net::IpAddr`.
 
+use core::fmt;
+use cpu::libc::uint8_t;
+
+use ::ffi::ipv4_addr_to_str;
+use ::ffi::ipv4_addr_t;
+
+use ::ffi::ipv6_addr_to_str;
+use ::ffi::ipv6_addr_t;
+
 /// An IP address, either an IPv4 or IPv6 address.
 pub enum IpAddr {
     V4(Ipv4Addr),
@@ -28,6 +37,31 @@ impl Ipv4Addr {
     }
 }
 
+impl fmt::Display for Ipv4Addr {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let mut buffer: [u8; 20] = [0; 20];
+        let v4addr = ipv4_addr_t {
+            u8: self.segments()
+        };
+
+        let ret = unsafe {
+            ipv4_addr_to_str(buffer.as_mut_ptr(), &v4addr,
+                buffer.len() as uint8_t)
+        };
+
+        if ret.is_null() {
+            return Result::Err(fmt::Error)
+        }
+
+        for i in buffer.iter() {
+            try!(write!(f, "{}", *i as char));
+        }
+
+        Result::Ok(())
+    }
+}
+
+
 impl Ipv6Addr {
     /// Creates a new IPv6 address from eight 16-bit segments.
     pub fn new(a: u16, b: u16, c: u16, d: u16,
@@ -45,5 +79,29 @@ impl Ipv6Addr {
     /// Returns the sixteen 8-bit segments which make up this address.
     pub fn segments(&self) -> [u8; 16] {
         self.0
+    }
+}
+
+impl fmt::Display for Ipv6Addr {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let mut buffer: [u8; 39] = [0; 39];
+        let v6addr = ipv6_addr_t {
+            u8: self.segments()
+        };
+
+        let ret = unsafe {
+            ipv6_addr_to_str(buffer.as_mut_ptr(), &v6addr,
+                buffer.len() as uint8_t)
+        };
+
+        if ret.is_null() {
+            return Result::Err(fmt::Error)
+        }
+
+        for i in buffer.iter() {
+            try!(write!(f, "{}", *i as char));
+        }
+
+        Result::Ok(())
     }
 }
