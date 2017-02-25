@@ -62,10 +62,10 @@ pub fn main() {
         mem::uninitialized()
     };
 
+    out.write_fmt(format_args!("Binding UDP socket to {}\n",
+                               soaddr)).unwrap();
     let mut sock = UdpSocket::bind(&mut socket, soaddr)
         .expect("Couldn't bind to address");
-    out.write_fmt(format_args!("UDP server listening on {}\n", port))
-        .unwrap();
 
     let mut buf = [0; 128];
     loop {

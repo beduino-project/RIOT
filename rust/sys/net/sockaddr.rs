@@ -15,6 +15,8 @@ use ::ffi::_sock_tl_ep__bindgen_ty_1
 use cpu::libc::c_int;
 use cpu::libc::uint16_t;
 
+use core::fmt;
+
 extern {
     static XAF_INET: c_int;
     static XAF_INET6: c_int;
@@ -63,6 +65,15 @@ impl SocketAddr {
     }
 }
 
+impl fmt::Display for SocketAddr {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            &SocketAddr::V4(ref a) => write!(f, "{}", a),
+            &SocketAddr::V6(ref a) => write!(f, "{}", a),
+        }
+    }
+}
+
 impl SocketAddrV4 {
     /// Create a new socket address from an IPv4 address and a 16-bit
     /// port.
@@ -82,6 +93,16 @@ impl SocketAddrV4 {
     }
 }
 
+impl fmt::Display for SocketAddrV4 {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let addr = unsafe {
+            Ipv4Addr::from_segments(self.0.addr.ipv4)
+        };
+
+        write!(f, "{}:{}", addr, self.0.port)
+    }
+}
+
 impl SocketAddrV6 {
     /// Create a new socket address from an IPv6 address and a 16-bit
     /// port.
@@ -98,5 +119,15 @@ impl SocketAddrV6 {
         };
 
         SocketAddrV6(i)
+    }
+}
+
+impl fmt::Display for SocketAddrV6 {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let addr = unsafe {
+            Ipv6Addr::from_segments(self.0.addr.ipv6)
+        };
+
+        write!(f, "[{}]:{}", addr, self.0.port)
     }
 }

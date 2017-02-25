@@ -31,6 +31,11 @@ impl Ipv4Addr {
         Ipv4Addr([a, b, c, d])
     }
 
+    /// Creates a new Ipv4Addr from a an array.
+    pub fn from_segments(s: [u8; 4]) -> Self {
+        Ipv4Addr(s)
+    }
+
     /// Returns the four 8-bit segments which make up this address.
     pub fn segments(&self) -> [u8; 4] {
         self.0
@@ -74,6 +79,11 @@ impl Ipv6Addr {
                   (f / 256) as u8, f as u8,
                   (g / 256) as u8, g as u8,
                   (h / 256) as u8, h as u8])
+    }
+
+    /// Creates a new Ipv6Addr from a an array.
+    pub fn from_segments(s: [u8; 16]) -> Self {
+        Ipv6Addr(s)
     }
 
     /// Returns the sixteen 8-bit segments which make up this address.
