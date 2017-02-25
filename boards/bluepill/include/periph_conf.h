@@ -127,6 +127,31 @@ static const uart_conf_t uart_config[] = {
 /** @} */
 
 /**
+ * @name    PWM configuration
+ * @{
+ */
+/*
+ * PLEASE NOTE: I'm not quite sure this makes any sense at all.
+ * 							What am I even doing?
+ *     ~~ Tristan Bruns
+ */
+static const pwm_conf_t pwm_config[] = {
+    {
+        .dev      = TIM3,
+        .rcc_mask = RCC_APB1ENR_TIM3EN,
+        .chan     = { { .pin = GPIO_PIN(PORT_A, 6), .cc_chan = 0 },
+                      { .pin = GPIO_PIN(PORT_A, 7), .cc_chan = 1 },
+                      { .pin = GPIO_PIN(PORT_B, 0), .cc_chan = 2 },
+                      { .pin = GPIO_PIN(PORT_B, 1), .cc_chan = 3 } },
+        .af       = GPIO_AF_OUT_PP,
+        .bus      = APB1
+    }
+};
+
+#define PWM_NUMOF           (sizeof(pwm_config) / sizeof(pwm_config[0]))
+/** @} */
+
+/**
  * @name I2C configuration
  * @{
  */
