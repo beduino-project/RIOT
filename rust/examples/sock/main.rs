@@ -42,15 +42,14 @@ extern {
 pub fn main() {
     let port = 2342;
     let mut out = Stdout {};
-    out.write_str("Starting RIOT UDP server example...\n").unwrap();
 
     // Wait for autoconfiguration
-    out.write_str("Wating for addresses autoconfiguration...\n")
+    writeln!(out, "Waiting for addresses autoconfiguration...\n")
         .unwrap();
     xtimer::sleep(Seconds(3));
 
     // Print network addresses
-    out.write_str("Configured network interfaces:\n").unwrap();
+    writeln!(out, "Configured network interfaces:").unwrap();
     unsafe {
         _netif_config(0, ptr::null_mut())
     };
@@ -62,16 +61,14 @@ pub fn main() {
         mem::uninitialized()
     };
 
-    out.write_fmt(format_args!("Binding UDP socket to {}\n",
-                               soaddr)).unwrap();
+    writeln!(out, "Binding socket to {}", soaddr).unwrap();
     let mut sock = UdpSocket::bind(&mut socket, soaddr)
         .expect("Couldn't bind to address");
 
     let mut buf = [0; 128];
     loop {
         let (recv, sender) = sock.recv_from(&mut buf).unwrap();
-        out.write_fmt(format_args!("Received {} bytes\n", recv))
-            .unwrap();
+        writeln!(out, "Received {} bytes", recv).unwrap();
 
         sock.send_to(&buf[0..recv-1], sender).unwrap();
     };
