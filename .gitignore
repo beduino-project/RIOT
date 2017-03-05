@@ -29,9 +29,6 @@ tags
 # GDB initialization scripts
 .gdbinit
 
-# Symlink to /dev/stdin for rust bindgen hack
-ffi.rs
-
 # Eclipse symbol file (output from make eclipsesym)
 eclipsesym.xml
 /toolchain
