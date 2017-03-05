@@ -3,10 +3,6 @@
 //! This module is closely modelled after `std::net::UdpSocket`.
 
 use kernel::error;
-use kernel::error::Result;
-
-use core::result::Result::Ok;
-use core::result::Result::Err;
 
 use core::ops::Drop;
 use core::ptr;
@@ -34,7 +30,7 @@ pub struct UdpSocket<'a>(&'a mut sock_udp_t);
 
 impl<'a> UdpSocket<'a> {
     /// Creates a UDP socket from the given address.
-    pub fn bind(s: &'a mut sock_udp_t, a: SocketAddr) -> Result<UdpSocket<'a>> {
+    pub fn bind(s: &'a mut sock_udp_t, a: SocketAddr) -> error::Result<UdpSocket<'a>> {
         let p = s as *mut sock_udp_t;
         let l = &a.udp_ep() as *const sock_udp_ep_t;
 
@@ -43,15 +39,15 @@ impl<'a> UdpSocket<'a> {
         };
 
         if ret == 0 {
-            Ok(UdpSocket(s))
+            Result::Ok(UdpSocket(s))
         } else {
-            Err(error::decode_errno(-ret))
+            Result::Err(error::decode_errno(-ret))
         }
     }
 
     /// Sends data on the socket to the given address. On success,
     /// returns the number of bytes written.
-    pub fn send_to(&mut self, buf: &[u8], a: SocketAddr) -> Result<isize> {
+    pub fn send_to(&mut self, buf: &[u8], a: SocketAddr) -> error::Result<isize> {
         let r = &a.udp_ep() as *const sock_udp_ep_t;
         let p = buf.as_ptr() as *const c_void;
 
@@ -60,9 +56,9 @@ impl<'a> UdpSocket<'a> {
         };
 
         if ret >= 0 {
-            Ok(ret)
+            Result::Ok(ret)
         } else {
-            Err(error::decode_errno(-(ret as i32)))
+            Result::Err(error::decode_errno(-(ret as i32)))
         }
     }
 
@@ -71,7 +67,7 @@ impl<'a> UdpSocket<'a> {
     /// returned, if no received data is available, but everything is in
     /// order.
     pub fn recv_from(&mut self, buf: &mut [u8]) ->
-            Result<(usize, SocketAddr)> {
+            error::Result<(usize, SocketAddr)> {
         let p = buf.as_mut_ptr() as *mut c_void;
         let mut r: sock_udp_ep_t = unsafe {
             mem::uninitialized()
@@ -90,7 +86,7 @@ impl<'a> UdpSocket<'a> {
     }
 
     /// Returns the socket address that this socket was created from.
-    pub fn local_addr(&mut self) -> Result<SocketAddr> {
+    pub fn local_addr(&mut self) -> error::Result<SocketAddr> {
         let mut r: sock_udp_ep_t = unsafe {
             mem::uninitialized()
         };

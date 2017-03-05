@@ -1,9 +1,6 @@
 use cpu::libc::uint16_t;
 use cpu::libc::c_int;
 
-use core::option::Option;
-use core::result::Result;
-
 use ::ffi::*;
 pub use ::ffi::msg_t;
 pub use ::ffi::msg_t__bindgen_ty_1 as content;
