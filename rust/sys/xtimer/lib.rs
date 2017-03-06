@@ -1,12 +1,11 @@
 #![no_std]
 
 extern crate cpu;
-use cpu::libc::uint32_t;
 
 extern {
-    fn xsleep(s: uint32_t);
-    fn xusleep(ms: uint32_t);
-    fn xnanosleep(ns: uint32_t);
+    fn xsleep(s: u32);
+    fn xusleep(ms: u32);
+    fn xnanosleep(ns: u32);
 }
 
 /// A duration type to represent a span of time, typically

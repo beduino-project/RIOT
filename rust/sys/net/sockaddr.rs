@@ -13,14 +13,13 @@ use ::ffi::_sock_tl_ep__bindgen_ty_1
     as sock_ep_union;
 
 use cpu::libc::c_int;
-use cpu::libc::uint16_t;
 
 use core::fmt;
 
 extern {
     static XAF_INET: c_int;
     static XAF_INET6: c_int;
-    static XSOCK_ADDR_ANY_NETIF: uint16_t;
+    static XSOCK_ADDR_ANY_NETIF: u16;
 }
 
 /// Representation of a socket address for networking applications.

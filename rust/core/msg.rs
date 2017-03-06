@@ -1,4 +1,3 @@
-use cpu::libc::uint16_t;
 use cpu::libc::c_int;
 
 use ::ffi::*;
@@ -7,7 +6,7 @@ pub use ::ffi::msg_t__bindgen_ty_1 as content;
 
 impl msg_t {
     /// Create a new message of the given type with the given content.
-    pub fn new(t: uint16_t, c: content) -> Self {
+    pub fn new(t: u16, c: content) -> Self {
         msg_t { sender_pid: 0, type_: t, content: c }
     }
 }

@@ -3,7 +3,6 @@
 //! This is very closely modelled after `std::net::IpAddr`.
 
 use core::fmt;
-use cpu::libc::uint8_t;
 
 use ::ffi::ipv4_addr_to_str;
 use ::ffi::ipv4_addr_t;
@@ -51,7 +50,7 @@ impl fmt::Display for Ipv4Addr {
 
         let ret = unsafe {
             ipv4_addr_to_str(buffer.as_mut_ptr(), &v4addr,
-                buffer.len() as uint8_t)
+                buffer.len() as u8)
         };
 
         if ret.is_null() {
@@ -101,7 +100,7 @@ impl fmt::Display for Ipv6Addr {
 
         let ret = unsafe {
             ipv6_addr_to_str(buffer.as_mut_ptr(), &v6addr,
-                buffer.len() as uint8_t)
+                buffer.len() as u8)
         };
 
         if ret.is_null() {

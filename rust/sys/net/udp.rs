@@ -9,7 +9,6 @@ use core::ptr;
 use core::mem;
 
 use cpu::libc::c_void;
-use cpu::libc::uint32_t;
 
 use ::sockaddr::SocketAddr;
 use ::ffi::sock_udp_ep_t;
@@ -22,7 +21,7 @@ use ::ffi::sock_udp_close;
 pub use ::ffi::sock_udp_t;
 
 extern {
-    static XSOCK_NO_TIMEOUT: uint32_t;
+    static XSOCK_NO_TIMEOUT: u32;
 }
 
 /// A User Datagram Protocol socket.
