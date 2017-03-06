@@ -5,6 +5,7 @@ extern crate cpu;
 use core::fmt;
 use core::fmt::Result;
 use core::result;
+use cpu::libc::c_char;
 
 mod ffi;
 use ffi::print;
@@ -17,7 +18,7 @@ pub struct Stdout;
 
 impl fmt::Write for Stdout {
     fn write_str(&mut self, s: &str) -> Result {
-        unsafe { print(s.as_ptr(), s.len()); }
+        unsafe { print(s.as_ptr() as *const c_char, s.len()); }
         result::Result::Ok(())
     }
 }

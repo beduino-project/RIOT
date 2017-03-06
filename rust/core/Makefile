@@ -1,7 +1,7 @@
 MODULE = rust/kernel
 
 # Make sure the cpu crate is build before.
-DIRS = $(RIOTRUST)/cpu/$(CPU)
+DIRS = $(RIOTRUST)/cpu
 
 # Auto generate an ffi.rs file from a C header.
 RUST_FFI_HEADER = ffi.h

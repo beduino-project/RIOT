@@ -36,13 +36,7 @@ ifeq ($(strip $(SRCXX)),)
     SRCXX := $(wildcard *.cpp)
 endif
 ifeq ($(strip $(RUSTSRC)),)
-    ifneq (,$(wildcard main.rs))
-        CRATE_TYPE = bin
-    else ifneq (,$(wildcard lib.rs))
-        CRATE_TYPE = lib
-    endif
-
-    RUSTSRC = $(wildcard *.rs)
+    RUSTSRC := $(wildcard *.rs)
 endif
 ifeq ($(strip $(ASMSRC)),)
     ASMSRC := $(wildcard *.s)
@@ -83,7 +77,15 @@ $(OBJCXX): $(BINDIR)/$(MODULE)/%.o: %.cpp $(RIOTBUILD_CONFIG_HEADER_C)
 		-DRIOT_FILE_NOPATH=\"$(notdir $<)\" \
 		$(CXXFLAGS) $(CXXINCLUDES) $(INCLUDES) -MD -MP -c -o $@ $(abspath $<)
 
-ifdef CRATE_TYPE
+ifneq ($(strip $(RUSTSRC)),)
+ifneq ($(filter main.rs,$(RUSTSRC)),)
+    CRATE_TYPE := bin
+else ifneq ($(filter lib.rs,$(RUSTSRC)),)
+    CRATE_TYPE := lib
+else
+    $(error Could not figure out the CRATE_TYPE)
+endif
+
 include $(RIOTRUST)/Makefile.rust
 
 ifneq (,$(RUST_FFI_HEADER))

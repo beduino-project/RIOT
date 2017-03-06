@@ -613,7 +613,7 @@ endif
 
 ifeq (1,$(RUST_BUILD))
     USEPKG += rust/core
-    USEMODULE += rust/basecpu rust/cpu rust/kernel
+    USEMODULE += rust/cpu rust/kernel
 
     ifneq (,$(filter rust/fmt,$(USEMODULE)))
         USEMODULE += fmt

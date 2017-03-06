@@ -1,9 +1,0 @@
-# Define the default module name.
-MODULE ?= rust/cpu
-
-ifeq (rust/cpu,$(MODULE))
-# Make all cpu modules depend on basecpu.
-DIRS = ../basecpu
-endif
-
-include $(RIOTBASE)/Makefile.base
