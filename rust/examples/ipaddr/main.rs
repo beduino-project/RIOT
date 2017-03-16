@@ -1,18 +1,7 @@
-#![feature(lang_items)]
-#![allow(private_no_mangle_fns)]
 #![no_main]
 #![no_std]
 
-mod lang_items {
-    #[lang = "panic_fmt"]
-    #[no_mangle]
-    extern fn panic_fmt() {}
-
-    #[lang = "eh_personality"]
-    #[no_mangle]
-    fn eh_personality() {}
-}
-
+extern crate kernel;
 extern crate fmt;
 extern crate net;
 

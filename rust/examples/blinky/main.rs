@@ -1,15 +1,7 @@
-#![feature(lang_items)]
 #![no_main]
 #![no_std]
 
-mod lang_items {
-    #[lang = "panic_fmt"]
-    extern fn panic_fmt() {}
-
-    #[lang = "eh_personality"]
-    fn eh_personality() {}
-}
-
+extern crate kernel;
 extern crate periph;
 extern crate xtimer;
 
