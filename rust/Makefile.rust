@@ -3,7 +3,7 @@ CRATE_TYPE ?= bin
 CRATE_NAME ?= $(shell basename $(MODULE))
 
 # Make our custom targets known to rustc.
-export RUST_TARGET_PATH ?= $(RIOTBASE)/dist/rust
+export RUST_TARGET_PATH ?= $(RIOTRUST)/dist/targets
 
 # Set the rust target accordingly.
 ifeq ($(BOARD),native)
