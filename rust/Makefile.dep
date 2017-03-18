@@ -1,0 +1,20 @@
+USEPKG += rust/core
+USEMODULE += rust/cpu rust/kernel
+
+ifneq (,$(filter rust/fmt,$(USEMODULE)))
+    USEMODULE += fmt
+endif
+
+ifneq (,$(filter rust/xtimer,$(USEMODULE)))
+    USEMODULE += xtimer
+endif
+
+ifneq (,$(filter rust/net,$(USEMODULE)))
+    USEMODULE += ipv4_addr
+    USEMODULE += ipv6_addr
+endif
+
+ifneq (,$(filter rust/gcoap,$(USEMODULE)))
+    USEPKG += nanocoap
+    USEMODULE += gcoap
+endif
