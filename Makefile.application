@@ -4,10 +4,7 @@ DIRS += $(RIOTCPU)/$(CPU) $(RIOTBOARD)/$(BOARD)
 DIRS += $(RIOTBASE)/core $(RIOTBASE)/drivers $(RIOTBASE)/sys
 
 ifeq (1,$(RUST_BUILD))
-# rust/core pulls in rust/cpu/$cpu
-DIRS += $(RIOTRUST)/core
-
-DIRS += $(RIOTRUST)/drivers $(RIOTRUST)/sys
+DIRS += $(RIOTRUST)
 endif
 
 include $(RIOTBASE)/Makefile.base
