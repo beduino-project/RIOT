@@ -1,0 +1,49 @@
+
+MODULE ?= $(shell basename $(CURDIR))
+
+ifeq ($(strip $(RUSTSRC)),)
+    RUSTSRC := $(wildcard *.rs)
+endif
+
+RUSTOBJ     := $(RUSTSRC:%.rs=$(BINDIR)/$(MODULE)/%.o)
+
+ifeq ($(strip $(RUSTSRC)),)
+    $(error Wrong Makefile, bro...)
+endif
+
+ifneq ($(filter main.rs,$(RUSTSRC)),)
+    CRATE_TYPE := bin
+else ifneq ($(filter lib.rs,$(RUSTSRC)),)
+    CRATE_TYPE := lib
+else
+    $(error Could not figure out the CRATE_TYPE)
+endif
+
+include $(RIOTRUST)/Makefile.rust
+
+ifneq (,$(RUST_FFI_HEADER))
+BINDGEN_CFLAGS = -include $(RIOTBUILD_CONFIG_HEADER_C) \
+	$(INCLUDES)
+RUSTSRC += $(BINDIR)/$(MODULE)/ffi.rs
+
+ifneq ($(TOOLCHAIN),llvm)
+include $(RIOTCPU)/Makefile.include.llvm
+BINDGEN_CFLAGS += $(GCC_C_INCLUDES)
+endif
+endif
+
+ifeq (1,$(RUST_FFI))
+RUST_FFI_LIB = $(BINDIR)/$(MODULE)/libffi.a
+endif
+
+include $(RIOTBASE)/Makefile.base
+
+ifneq (,$(RUST_FFI_HEADER))
+$(BINDIR)/$(MODULE)/ffi.rs: $(RUST_FFI_HEADER) | $(BINDIR)/$(MODULE)/
+	$(Q)bindgen $(BINDGEN_FLAGS) -o $@ $< -- $(BINDGEN_CFLAGS)
+endif
+
+ifeq (1,$(RUST_FFI))
+$(RUST_FFI_LIB): $(OBJ)
+	$(Q)$(AR) $(ARFLAGS) $@ $<
+endif

@@ -35,7 +35,7 @@ RUSTSRC := $(wildcard *.rs) \
 	$(BINDIR)/$(MODULE)/codes.rs \
 	$(BINDIR)/$(MODULE)/flags.rs \
 	$(BINDIR)/$(MODULE)/formats.rs
-include $(RIOTBASE)/Makefile.base
+include $(RIOTRUST)/Makefile.base
 
 $(BINDIR)/$(MODULE)/codes.rs: $(BINDIR)/$(MODULE)/
 	$(Q)printf "\n" > $@

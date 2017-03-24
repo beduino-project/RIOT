@@ -1,7 +1,7 @@
 MODULE = rust/cpu
 
 RUSTSRC := $(wildcard *.rs) $(BINDIR)/$(MODULE)/libc.rs
-include $(RIOTBASE)/Makefile.base
+include $(RIOTRUST)/Makefile.base
 
 $(BINDIR)/$(MODULE)/libc.cpprs: $(BINDIR)/$(MODULE)/
 	$(Q)'$(RIOTRUST)/dist/tools/libc/libc.sh' > $@

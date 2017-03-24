@@ -18,4 +18,4 @@ RUST_FFI_FUNCS = msg_init_queue msg_send msg_send_to_self \
 # The kernel_pid_t variable is needed by the IPC wrapper.
 RUST_FFI_TYPES = kernel_pid_t
 
-include $(RIOTBASE)/Makefile.base
+include $(RIOTRUST)/Makefile.base
