@@ -1,5 +1,4 @@
-
-MODULE ?= $(shell basename $(CURDIR))
+MODULE ?= rust/$(shell basename $(CURDIR))
 
 ifeq ($(strip $(RUSTSRC)),)
     RUSTSRC := $(wildcard *.rs)
