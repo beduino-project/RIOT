@@ -1,2 +1,0 @@
-MODULE = rust/$(shell basename $(CURDIR))
-include $(RIOTBASE)/Makefile.base

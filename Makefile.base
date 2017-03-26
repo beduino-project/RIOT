@@ -35,9 +35,6 @@ endif
 ifeq ($(strip $(SRCXX)),)
     SRCXX := $(wildcard *.cpp)
 endif
-ifeq ($(strip $(RUSTSRC)),)
-    RUSTSRC := $(wildcard *.rs)
-endif
 ifeq ($(strip $(ASMSRC)),)
     ASMSRC := $(wildcard *.s)
 endif
@@ -49,7 +46,6 @@ OBJC_LTO    := $(SRC:%.c=$(BINDIR)/$(MODULE)/%.o)
 OBJC_NOLTO  := $(SRC_NOLTO:%.c=$(BINDIR)/$(MODULE)/%.o)
 OBJC        := $(OBJC_NOLTO) $(OBJC_LTO)
 OBJCXX      := $(SRCXX:%.cpp=$(BINDIR)/$(MODULE)/%.o)
-RUSTOBJ     := $(RUSTSRC:%.rs=$(BINDIR)/$(MODULE)/%.o)
 ASMOBJ      := $(ASMSRC:%.s=$(BINDIR)/$(MODULE)/%.o)
 ASSMOBJ     := $(ASSMSRC:%.S=$(BINDIR)/$(MODULE)/%.o)
 
@@ -76,38 +72,6 @@ $(OBJCXX): $(BINDIR)/$(MODULE)/%.o: %.cpp $(RIOTBUILD_CONFIG_HEADER_C)
 		-DRIOT_FILE_RELATIVE=\"$(patsubst $(RIOTBASE)/%,%,$(abspath $<))\" \
 		-DRIOT_FILE_NOPATH=\"$(notdir $<)\" \
 		$(CXXFLAGS) $(CXXINCLUDES) $(INCLUDES) -MD -MP -c -o $@ $(abspath $<)
-
-ifneq ($(strip $(RUSTSRC)),)
-ifneq ($(filter main.rs,$(RUSTSRC)),)
-    CRATE_TYPE := bin
-else ifneq ($(filter lib.rs,$(RUSTSRC)),)
-    CRATE_TYPE := lib
-else
-    $(error Could not figure out the CRATE_TYPE)
-endif
-
-include $(RIOTRUST)/Makefile.rust
-
-ifneq (,$(RUST_FFI_HEADER))
-BINDGEN_CFLAGS = -include $(RIOTBUILD_CONFIG_HEADER_C) \
-	$(INCLUDES)
-
-ifneq ($(TOOLCHAIN),llvm)
-include $(RIOTCPU)/Makefile.include.llvm
-BINDGEN_CFLAGS += $(GCC_C_INCLUDES)
-endif
-
-RUSTSRC += $(BINDIR)/$(MODULE)/ffi.rs
-$(BINDIR)/$(MODULE)/ffi.rs: $(RUST_FFI_HEADER) | $(BINDIR)/$(MODULE)/
-	$(Q)bindgen $(BINDGEN_FLAGS) -o $@ $< -- $(BINDGEN_CFLAGS)
-endif
-
-ifeq (1,$(RUST_FFI))
-RUST_FFI_LIB = $(BINDIR)/$(MODULE)/libffi.a
-$(RUST_FFI_LIB): $(OBJ)
-	$(Q)$(AR) $(ARFLAGS) $@ $<
-endif
-endif
 
 ifeq ($(CRATE_TYPE),bin)
 $(RUSTOBJ): $(RUSTSRC) | $(BINDIR)/$(MODULE)/ $(RUST_FFI_LIB) ${DIRS:%=ALL--%}

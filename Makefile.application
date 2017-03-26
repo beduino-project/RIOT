@@ -5,6 +5,7 @@ DIRS += $(RIOTBASE)/core $(RIOTBASE)/drivers $(RIOTBASE)/sys
 
 ifeq (1,$(RUST_BUILD))
 DIRS += $(RIOTRUST)
-endif
-
+include $(RIOTRUST)/Makefile.base
+else
 include $(RIOTBASE)/Makefile.base
+endif

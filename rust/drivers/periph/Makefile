@@ -10,4 +10,4 @@ RUST_FFI_FUNCS = gpio_init gpio_read gpio_write gpio_toggle
 # Build libffi.a to wrap C Macros.
 RUST_FFI = 1
 
-include $(RIOTRUST)/drivers/Makefile.crate
+include $(RIOTRUST)/Makefile.base
