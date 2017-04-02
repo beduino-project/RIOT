@@ -17,7 +17,7 @@ extern {
 
 impl Pin {
     /// Creates a new GPIO Pin with the provided number `n`.
-    pub fn new(n: u32) -> Pin {
+    pub fn new(n: gpio_t) -> Pin {
         Pin(n)
     }
 
