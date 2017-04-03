@@ -9,6 +9,10 @@ ifneq (,$(filter rust/xtimer,$(USEMODULE)))
     USEMODULE += xtimer
 endif
 
+ifneq (,$(filter rust/servo,$(USEMODULE)))
+    USEMODULE += servo
+endif
+
 ifneq (,$(filter rust/net,$(USEMODULE)))
     USEMODULE += ipv4_addr
     USEMODULE += ipv6_addr
