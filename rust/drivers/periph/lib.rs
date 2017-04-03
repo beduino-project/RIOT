@@ -7,3 +7,4 @@ extern crate cpu;
 
 mod ffi;
 pub mod gpio;
+pub mod pwm;
