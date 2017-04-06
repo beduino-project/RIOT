@@ -42,22 +42,22 @@ mod handler {
     use gcoap::resp;
     use gcoap::req;
 
-    pub extern fn hello(p: *mut gcoap::pkt, b: *mut u8, l: usize) -> i32 {
+    pub extern fn hello(p: *mut gcoap::pkt, b: *mut u8, l: usize) -> isize {
         let mut resp = resp::Response::new(p, b, l, codes::CODE_CONTENT);
         match resp.write("Hello World!".as_ref()) {
-            Some(_) => resp.finish(formats::TEXT).unwrap_or(-1) as i32,
+            Some(_) => resp.finish(formats::TEXT).unwrap_or(-1),
             None    => -1
         }
     }
 
-    pub extern fn name(p: *mut gcoap::pkt, b: *mut u8, l: usize) -> i32 {
+    pub extern fn name(p: *mut gcoap::pkt, b: *mut u8, l: usize) -> isize {
         let mut req = req::Request::from_pkt(p);
         let mut input: [u8; 32] = [0; 32];
 
         let len = req.copy_payload(&mut input);
         if len == 0 {
             let mut r = resp::Response::new(p, b, l, codes::CODE_BAD_REQUEST);
-            return r.finish(formats::NONE).unwrap_or(-1) as i32;
+            return r.finish(formats::NONE).unwrap_or(-1);
         };
 
         let name = match str::from_utf8(input[0..len].as_ref()) {
@@ -70,7 +70,7 @@ mod handler {
             return -1;
         }
 
-        resp.finish(formats::TEXT).unwrap_or(-1) as i32
+        resp.finish(formats::TEXT).unwrap_or(-1)
     }
 }
 
