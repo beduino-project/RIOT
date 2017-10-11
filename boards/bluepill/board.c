@@ -1,4 +1,4 @@
-/** TODO copyright comment *//
+/** TODO copyright comment */
 
 /**
  * @ingroup     boards_bluepill
@@ -17,6 +17,8 @@
 
 void board_init(void)
 {
+    cpu_init();
+
     /* TODO */
     return;
 }
