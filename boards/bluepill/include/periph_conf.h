@@ -114,6 +114,54 @@ static const uart_conf_t uart_config[] = {
 #define UART_NUMOF          (sizeof(uart_config) / sizeof(uart_config[0]))
 /** @} */
 
+/**
+ * @name   SPI configuration
+ *
+ * @note    The spi_divtable is auto-generated from
+ *          `cpu/stm32_common/dist/spi_divtable/spi_divtable.c`
+ * @{
+ */
+static const uint8_t spi_divtable[2][5] = {
+    {       /* for APB1 @ 36000000Hz */
+        7,  /* -> 140625Hz */
+        6,  /* -> 281250Hz */
+        4,  /* -> 1125000Hz */
+        2,  /* -> 4500000Hz */
+        1   /* -> 9000000Hz */
+    },
+    {       /* for APB2 @ 72000000Hz */
+        7,  /* -> 281250Hz */
+        7,  /* -> 281250Hz */
+        5,  /* -> 1125000Hz */
+        3,  /* -> 4500000Hz */
+        2   /* -> 9000000Hz */
+    }
+};
+
+static const spi_conf_t spi_config[] = {
+    {
+        .dev      = SPI1,
+        .mosi_pin = GPIO_PIN(PORT_A, 7),
+        .miso_pin = GPIO_PIN(PORT_A, 6),
+        .sclk_pin = GPIO_PIN(PORT_A, 5),
+        .cs_pin   = GPIO_UNDEF,
+        .rccmask  = RCC_APB2ENR_SPI1EN,
+        .apbbus   = APB2
+    },
+    {
+        .dev      = SPI2,
+        .mosi_pin = GPIO_PIN(PORT_B, 15),
+        .miso_pin = GPIO_PIN(PORT_B, 14),
+        .sclk_pin = GPIO_PIN(PORT_B, 13),
+        .cs_pin   = GPIO_UNDEF,
+        .rccmask  = RCC_APB1ENR_SPI2EN,
+        .apbbus   = APB1
+    }
+};
+
+#define SPI_NUMOF           (sizeof(spi_config) / sizeof(spi_config[0]))
+/** @} */
+
 #ifdef __cplusplus
 }
 #endif
