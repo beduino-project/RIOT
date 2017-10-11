@@ -45,8 +45,6 @@ extern "C" {
  * @{
  */
 
-/* TODO find out if we can use TIM4 as well. */
-
 static const timer_conf_t timer_config[] = {
     {
         .dev      = TIM2,
