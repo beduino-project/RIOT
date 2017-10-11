@@ -61,6 +61,13 @@ static const timer_conf_t timer_config[] = {
         .rcc_mask = RCC_APB1ENR_TIM3EN,
         .bus      = APB1,
         .irqn     = TIM3_IRQn
+    },
+    {
+        .dev      = TIM4,
+        .max      = 0x0000ffff,
+        .rcc_mask = RCC_APB1ENR_TIM4EN,
+        .bus      = APB1,
+        .irqn     = TIM4_IRQn
     }
 };
 
