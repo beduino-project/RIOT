@@ -14,11 +14,10 @@
 
 #include "cpu.h"
 #include "board.h"
+#include "periph/gpio.h"
 
 void board_init(void)
 {
     cpu_init();
-
-    /* TODO */
-    return;
+    gpio_init(LED0_PIN, GPIO_OUT);
 }
