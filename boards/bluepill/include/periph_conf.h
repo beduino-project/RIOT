@@ -1,6 +1,25 @@
-/** TODO copyright comment **/
+/*
+ * Copyright (C) 2015 TriaGnoSys GmbH
+ *               2017 Alexander Kurth, Sören Tempel, Tristan Bruns
+ *
+ * This file is subject to the terms and conditions of the GNU Lesser
+ * General Public License v2.1. See the file LICENSE in the top level
+ * directory for more details.
+ */
 
-/* TODO doxygen comment */
+/**
+ * @ingroup     boards_bluepill
+ * @{
+ *
+ * @file
+ * @brief       Peripheral MCU configuration for the bluepill board
+ *
+ * @author      Víctor Ariño <victor.arino@triagnosys.com>
+ * @author      Sören Tempel <tempel@uni-bremen.de>
+ * @author      Tristan Bruns <tbruns@uni-bremen.de>
+ * @author      Alexander Kurth <kurth1@uni-bremen.de>
+ *
+ */
 
 #ifndef PERIPH_CONF_H
 #define PERIPH_CONF_H
@@ -41,10 +60,29 @@ extern "C" {
 /** @} */
 
 /**
+ * @name    ADC configuration
+ * @{
+ */
+#define ADC_CONFIG {                                     \
+    { .dev = 0, .pin = GPIO_PIN(PORT_A, 0), .chan = 0 }, \
+    { .dev = 0, .pin = GPIO_PIN(PORT_A, 1), .chan = 1 }, \
+    { .dev = 0, .pin = GPIO_PIN(PORT_A, 2), .chan = 2 }, \
+    { .dev = 0, .pin = GPIO_PIN(PORT_A, 3), .chan = 3 }, \
+    { .dev = 0, .pin = GPIO_PIN(PORT_A, 4), .chan = 4 }, \
+    { .dev = 0, .pin = GPIO_PIN(PORT_A, 5), .chan = 5 }, \
+    { .dev = 0, .pin = GPIO_PIN(PORT_A, 6), .chan = 6 }, \
+    { .dev = 0, .pin = GPIO_PIN(PORT_A, 7), .chan = 7 }, \
+    { .dev = 0, .pin = GPIO_PIN(PORT_B, 0), .chan = 8 }, \
+    { .dev = 0, .pin = GPIO_PIN(PORT_B, 1), .chan = 9 }, \
+}
+
+#define ADC_NUMOF           10
+/** @} */
+
+/**
  * @name   Timer configuration
  * @{
  */
-
 static const timer_conf_t timer_config[] = {
     {
         .dev      = TIM2,
@@ -112,26 +150,6 @@ static const uart_conf_t uart_config[] = {
 #define UART_2_ISR          (isr_usart3)
 
 #define UART_NUMOF          (sizeof(uart_config) / sizeof(uart_config[0]))
-/** @} */
-
-/**
- * @name    ADC configuration
- * @{
- */
-#define ADC_CONFIG {                                     \
-    { .dev = 0, .pin = GPIO_PIN(PORT_A, 0), .chan = 0 }, \
-    { .dev = 0, .pin = GPIO_PIN(PORT_A, 1), .chan = 1 }, \
-    { .dev = 0, .pin = GPIO_PIN(PORT_A, 2), .chan = 2 }, \
-    { .dev = 0, .pin = GPIO_PIN(PORT_A, 3), .chan = 3 }, \
-    { .dev = 0, .pin = GPIO_PIN(PORT_A, 4), .chan = 4 }, \
-    { .dev = 0, .pin = GPIO_PIN(PORT_A, 5), .chan = 5 }, \
-    { .dev = 0, .pin = GPIO_PIN(PORT_A, 6), .chan = 6 }, \
-    { .dev = 0, .pin = GPIO_PIN(PORT_A, 7), .chan = 7 }, \
-    { .dev = 0, .pin = GPIO_PIN(PORT_B, 0), .chan = 8 }, \
-    { .dev = 0, .pin = GPIO_PIN(PORT_B, 1), .chan = 9 }, \
-}
-
-#define ADC_NUMOF           10
 /** @} */
 
 /**
