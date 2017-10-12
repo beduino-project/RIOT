@@ -11,6 +11,13 @@ extern "C" {
 
 void board_init(void);
 
+/**
+ * @name    xtimer configuration
+ */
+#define XTIMER_WIDTH        (16)
+#define XTIMER_BACKOFF      5
+/** @} */
+
 #ifdef __cplusplus
 }
 #endif
