@@ -171,8 +171,8 @@ static const uart_conf_t uart_config[] = {
 #define I2C_0_ERR_IRQ       I2C1_ER_IRQn
 #define I2C_0_ERR_ISR       isr_i2c1_er
 /* I2C 0 pin configuration */
-#define I2C_0_SCL_PIN       GPIO_PIN(PORT_B, 8) /* remapped */
-#define I2C_0_SDA_PIN       GPIO_PIN(PORT_B, 9) /* remapped */
+#define I2C_0_SCL_PIN       GPIO_PIN(PORT_B, 6)
+#define I2C_0_SDA_PIN       GPIO_PIN(PORT_B, 7)
 
 /* I2C 1 device configuration */
 #define I2C_1_DEV           I2C2
