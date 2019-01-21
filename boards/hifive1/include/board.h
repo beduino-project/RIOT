@@ -62,5 +62,12 @@ void board_init_clock(void);
 }
 #endif
 
+#define AT86RF2XX_PARAM_SPI         (SPI_DEV(0))
+#define AT86RF2XX_PARAM_SPI_CLK     (SPI_CLK_5MHZ)
+#define AT86RF2XX_PARAM_CS          (GPIO_PIN(0,  2))
+#define AT86RF2XX_PARAM_INT         (GPIO_PIN(0,  1))
+#define AT86RF2XX_PARAM_RESET       (GPIO_PIN(0,  0))
+#define AT86RF2XX_PARAM_SLEEP       (GPIO_PIN(0, 23))
+
 #endif /* BOARD_H */
 /** @} */
